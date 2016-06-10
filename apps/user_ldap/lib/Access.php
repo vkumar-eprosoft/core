@@ -41,6 +41,7 @@ use OCA\User_LDAP\User\IUserTools;
 use OCA\User_LDAP\User\Manager;
 use OCA\User_LDAP\User\OfflineUser;
 use OCA\User_LDAP\Mapping\AbstractMapping;
+use OCA\User_LDAP\User\User;
 
 /**
  * Class Access
@@ -732,7 +733,14 @@ class Access extends LDAPUtility implements IUserTools {
 				$user->unmark();
 				$user = $this->userManager->get($ocName);
 			}
-			$user->processAttributes($userRecord);
+			if ($user !== null) {
+				$user->processAttributes($userRecord);
+			} else {
+				\OC::$server->getLogger()->debug(
+					"The ldap user manager retured null for $ocName",
+					['app'=>'user_ldap']
+				);
+			}
 		}
 	}
 
