@@ -41,7 +41,6 @@ use OCA\User_LDAP\User\IUserTools;
 use OCA\User_LDAP\User\Manager;
 use OCA\User_LDAP\User\OfflineUser;
 use OCA\User_LDAP\Mapping\AbstractMapping;
-use OCA\User_LDAP\User\User;
 
 /**
  * Class Access
