@@ -49,6 +49,8 @@
  *
  */
 
+use OCP\IRequest;
+
 require_once 'public/Constants.php';
 
 /**
@@ -271,12 +273,19 @@ class OC {
 		}
 	}
 
-	public static function checkMaintenanceMode($request) {
+	/**
+	 * Limit maintenance mode access
+	 * @param IRequest $request
+	 */
+	public static function checkMaintenanceMode(IRequest $request) {
+		// Check if requested URL matches 'index.php/occ'
+		$isOccControllerRequested = preg_match('|/index\.php$|', $request->getScriptName()) === 1
+				&& strpos($request->getPathInfo(), '/occ/') === 0;
 		// Allow ajax update script to execute without being stopped
 		if (
 			\OC::$server->getSystemConfig()->getValue('maintenance', false)
 			&& OC::$SUBURI != '/core/ajax/update.php'
-			&& strpos($request->server['PATH_INFO'], '/occ/') !== 0
+			&& !$isOccControllerRequested
 		) {
 			// send http status 503
 			header('HTTP/1.1 503 Service Temporarily Unavailable');

@@ -43,10 +43,6 @@ class OccController extends Controller {
 		'upgrade'
 	];
 
-	public function __construct($appName, IRequest $request) {
-		parent::__construct($appName, $request);
-	}
-
 	/**
 	 * @PublicPage
 	 * @NoCSRFRequired
