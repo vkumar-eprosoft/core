@@ -143,8 +143,10 @@ class GlobalStoragesController extends StoragesController {
 		$mountOptions,
 		$applicableUsers,
 		$applicableGroups,
-		$priority
+		$priority,
+		$testOnly = true
 	) {
+		$testOnly = filter_var($testOnly, FILTER_VALIDATE_BOOLEAN);  // boolean conversion required
 		$storage = $this->createStorage(
 			$mountPoint,
 			$backend,
@@ -176,7 +178,7 @@ class GlobalStoragesController extends StoragesController {
 			);
 		}
 
-		$this->updateStorageStatus($storage);
+		$this->updateStorageStatus($storage, $testOnly);
 
 		return new DataResponse(
 			$storage,

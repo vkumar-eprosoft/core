@@ -110,11 +110,12 @@ class UserGlobalStoragesController extends StoragesController {
 	 *
 	 * @NoAdminRequired
 	 */
-	public function show($id) {
+	public function show($id, $testOnly = true) {
+		$testOnly = filter_var($testOnly, FILTER_VALIDATE_BOOLEAN);  // boolean conversion required
 		try {
 			$storage = $this->service->getStorage($id);
 
-			$this->updateStorageStatus($storage);
+			$this->updateStorageStatus($storage, $testOnly);
 		} catch (NotFoundException $e) {
 			return new DataResponse(
 				[
@@ -145,8 +146,10 @@ class UserGlobalStoragesController extends StoragesController {
 	 */
 	public function update(
 		$id,
-		$backendOptions
+		$backendOptions,
+		$testOnly = true
 	) {
+		$testOnly = filter_var($testOnly, FILTER_VALIDATE_BOOLEAN);  // boolean conversion required
 		try {
 			$storage = $this->service->getStorage($id);
 			$authMechanism = $storage->getAuthMechanism();
@@ -170,7 +173,7 @@ class UserGlobalStoragesController extends StoragesController {
 			);
 		}
 
-		$this->updateStorageStatus($storage);
+		$this->updateStorageStatus($storage, $testOnly);
 		$this->sanitizeStorage($storage);
 
 		return new DataResponse(

@@ -241,7 +241,7 @@ abstract class StoragesController extends Controller {
 	 *
 	 * @param StorageConfig $storage storage configuration
 	 */
-	protected function updateStorageStatus(StorageConfig &$storage) {
+	protected function updateStorageStatus(StorageConfig &$storage, $testOnly = true) {
 		try {
 			$this->manipulateStorageConfig($storage);
 
@@ -252,7 +252,8 @@ abstract class StoragesController extends Controller {
 				\OC_Mount_Config::getBackendStatus(
 					$backend->getStorageClass(),
 					$storage->getBackendOptions(),
-					false
+					false,
+					$testOnly
 				)
 			);
 		} catch (InsufficientDataForMeaningfulAnswerException $e) {
@@ -296,11 +297,12 @@ abstract class StoragesController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function show($id) {
+	public function show($id, $testOnly = true) {
+		$testOnly = filter_var($testOnly, FILTER_VALIDATE_BOOLEAN);  // boolean conversion required
 		try {
 			$storage = $this->service->getStorage($id);
 
-			$this->updateStorageStatus($storage);
+			$this->updateStorageStatus($storage, $testOnly);
 		} catch (NotFoundException $e) {
 			return new DataResponse(
 				[
