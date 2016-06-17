@@ -82,16 +82,27 @@ class ListCommand extends Base {
 				null,
 				InputOption::VALUE_NONE,
 				'don\'t truncate long values in table output'
+			)->addOption(
+				'all',
+				'a',
+				InputOption::VALUE_NONE,
+				'show both system wide mounts and all personal mounts'
 			);
 		parent::configure();
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$userId = $input->getArgument('user_id');
-		$storageService = $this->getStorageService($userId);
+		if ($input->getOption('all')) {
+			/** @var  $mounts StorageConfig[] */
+			$mounts = $this->globalService->getStorageForAllUsers();
+			$userId = null;
+		} else {
+			$userId = $input->getArgument('user_id');
+			$storageService = $this->getStorageService($userId);
 
-		/** @var  $mounts StorageConfig[] */
-		$mounts = $storageService->getAllStorages();
+			/** @var  $mounts StorageConfig[] */
+			$mounts = $storageService->getAllStorages();
+		}
 
 		$this->listMounts($userId, $mounts, $input, $output);
 	}
