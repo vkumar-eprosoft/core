@@ -297,7 +297,7 @@ class Session implements IUserSession, Emitter {
 	 */
 	public function login($uid, $password) {
 		$this->session->regenerateId();
-		if ($this->validateToken($password)) {
+		if ($this->validateToken($password, $uid)) {
 			$user = $this->getUser();
 
 			// When logging in with token, the password must be decrypted first before passing to login hook
@@ -532,13 +532,17 @@ class Session implements IUserSession, Emitter {
 
 	/**
 	 * @param string $token
+	 * @param string $uid
 	 * @return boolean
 	 */
-	private function validateToken($token) {
+	private function validateToken($token, $uid = null) {
 		try {
 			$token = $this->tokenProvider->validateToken($token);
+			if (is_null($uid)) {
+				$uid = $token->getUID();
+			}
 			if (!is_null($token)) {
-				$result = $this->loginWithToken($token->getUID());
+				$result = $this->loginWithToken($uid);
 				if ($result) {
 					// Login success
 					$this->updateToken($token);
