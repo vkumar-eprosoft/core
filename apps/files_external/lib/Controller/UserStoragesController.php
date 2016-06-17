@@ -102,6 +102,7 @@ class UserStoragesController extends StoragesController {
 	 * {@inheritdoc}
 	 */
 	public function show($id, $testOnly = true) {
+		$testOnly = filter_var($testOnly, FILTER_VALIDATE_BOOLEAN);  // boolean conversion required
 		return parent::show($id, $testOnly);
 	}
 
@@ -173,6 +174,7 @@ class UserStoragesController extends StoragesController {
 		$mountOptions,
 		$testOnly = true
 	) {
+		$testOnly = filter_var($testOnly, FILTER_VALIDATE_BOOLEAN);  // boolean conversion required
 		$storage = $this->createStorage(
 			$mountPoint,
 			$backend,

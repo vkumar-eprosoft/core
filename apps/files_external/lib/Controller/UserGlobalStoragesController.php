@@ -112,6 +112,7 @@ class UserGlobalStoragesController extends StoragesController {
 	 * @NoAdminRequired
 	 */
 	public function show($id, $testOnly = true) {
+		$testOnly = filter_var($testOnly, FILTER_VALIDATE_BOOLEAN);  // boolean conversion required
 		try {
 			$storage = $this->service->getStorage($id);
 
@@ -149,6 +150,7 @@ class UserGlobalStoragesController extends StoragesController {
 		$backendOptions,
 		$testOnly = true
 	) {
+		$testOnly = filter_var($testOnly, FILTER_VALIDATE_BOOLEAN);  // boolean conversion required
 		try {
 			$storage = $this->service->getStorage($id);
 			$authMechanism = $storage->getAuthMechanism();
