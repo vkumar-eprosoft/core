@@ -106,12 +106,12 @@ class UserGlobalStoragesController extends StoragesController {
 	 * Get an external storage entry.
 	 *
 	 * @param int $id storage id
+	 * @param bool $testOnly whether to storage should only test the connection or do more things
 	 * @return DataResponse
 	 *
 	 * @NoAdminRequired
 	 */
 	public function show($id, $testOnly = true) {
-		$testOnly = filter_var($testOnly, FILTER_VALIDATE_BOOLEAN);  // boolean conversion required
 		try {
 			$storage = $this->service->getStorage($id);
 
@@ -139,6 +139,7 @@ class UserGlobalStoragesController extends StoragesController {
 	 *
 	 * @param int $id storage id
 	 * @param array $backendOptions backend-specific options
+	 * @param bool $testOnly whether to storage should only test the connection or do more things
 	 *
 	 * @return DataResponse
 	 *
@@ -149,7 +150,6 @@ class UserGlobalStoragesController extends StoragesController {
 		$backendOptions,
 		$testOnly = true
 	) {
-		$testOnly = filter_var($testOnly, FILTER_VALIDATE_BOOLEAN);  // boolean conversion required
 		try {
 			$storage = $this->service->getStorage($id);
 			$authMechanism = $storage->getAuthMechanism();
