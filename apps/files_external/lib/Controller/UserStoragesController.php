@@ -102,7 +102,6 @@ class UserStoragesController extends StoragesController {
 	 * {@inheritdoc}
 	 */
 	public function show($id, $testOnly = true) {
-		$testOnly = filter_var($testOnly, FILTER_VALIDATE_BOOLEAN);  // boolean conversion required
 		return parent::show($id, $testOnly);
 	}
 
@@ -160,6 +159,7 @@ class UserStoragesController extends StoragesController {
 	 * @param string $authMechanism authentication mechanism identifier
 	 * @param array $backendOptions backend-specific options
 	 * @param array $mountOptions backend-specific mount options
+	 * @param bool $testOnly whether to storage should only test the connection or do more things
 	 *
 	 * @return DataResponse
 	 *
@@ -174,7 +174,6 @@ class UserStoragesController extends StoragesController {
 		$mountOptions,
 		$testOnly = true
 	) {
-		$testOnly = filter_var($testOnly, FILTER_VALIDATE_BOOLEAN);  // boolean conversion required
 		$storage = $this->createStorage(
 			$mountPoint,
 			$backend,

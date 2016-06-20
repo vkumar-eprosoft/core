@@ -237,6 +237,7 @@ abstract class StoragesController extends Controller {
 	 * on whether the remote storage is available or not.
 	 *
 	 * @param StorageConfig $storage storage configuration
+	 * @param bool $testOnly whether to storage should only test the connection or do more things
 	 */
 	protected function updateStorageStatus(StorageConfig &$storage, $testOnly = true) {
 		try {
@@ -291,11 +292,11 @@ abstract class StoragesController extends Controller {
 	 * Get an external storage entry.
 	 *
 	 * @param int $id storage id
+	 * @param bool $testOnly whether to storage should only test the connection or do more things
 	 *
 	 * @return DataResponse
 	 */
 	public function show($id, $testOnly = true) {
-		$testOnly = filter_var($testOnly, FILTER_VALIDATE_BOOLEAN);  // boolean conversion required
 		try {
 			$storage = $this->service->getStorage($id);
 

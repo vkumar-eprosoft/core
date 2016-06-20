@@ -127,6 +127,7 @@ class GlobalStoragesController extends StoragesController {
 	 * @param array $applicableUsers users for which to mount the storage
 	 * @param array $applicableGroups groups for which to mount the storage
 	 * @param int $priority priority
+	 * @param bool $testOnly whether to storage should only test the connection or do more things
 	 *
 	 * @return DataResponse
 	 */
@@ -142,7 +143,6 @@ class GlobalStoragesController extends StoragesController {
 		$priority,
 		$testOnly = true
 	) {
-		$testOnly = filter_var($testOnly, FILTER_VALIDATE_BOOLEAN);  // boolean conversion required
 		$storage = $this->createStorage(
 			$mountPoint,
 			$backend,
